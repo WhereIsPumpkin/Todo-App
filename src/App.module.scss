@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&display=swap");
+
+// Colors
+$background-color: #fafafa;
+$base-color: #ffffff;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+body {
+  background-color: $background-color;
+
+  header {
+    background-image: url(./images/bg-mobile-light.jpg);
+    background-size: 100%;
+    padding: 48px 26px 120px 26px;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    h1 {
+      font-weight: 600;
+      color: #ffffff;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .main {
+    display: flex;
+    justify-content: center;
+    .todoAdd {
+      width: 327px;
+      padding: 14px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background-color: $base-color;
+      box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.5);
+      border-radius: 5px;
+      position: absolute;
+      top: 108px;
+      div {
+        width: 20px;
+        height: 20px;
+        border: #d1d2da 1px solid;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 7.25px;
+          height: 5px;
+        }
+      }
+      input {
+        color: #393a4b;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 12px;
+        border: none;
+      }
+      input:focus {
+        outline: none;
+      }
+      input::placeholder{
+        color: #9495A5;
+      }
+    }
+    .todoList {
+      background-color: $base-color;
+      padding: 16px 20px 20px 20px;
+      box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.5);
+      border-radius: 5px;
+      list-style-type: none;
+      width: 327px;
+      position: absolute;
+      top: 172px;
+    }
+  }
+}
