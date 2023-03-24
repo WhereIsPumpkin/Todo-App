@@ -5,6 +5,7 @@ import checkIcon from "./images/icon-check.svg";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
+
   const [todos, setTodos] = useState([]);
 
   const handleInputChange = (event) => {
@@ -13,10 +14,16 @@ function App() {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      setTodos((prevTodos) => [...prevTodos, inputValue]);
+      setTodos((prevTodos) => [...prevTodos, {
+        task: inputValue,
+        done: false,
+        id: 1
+      }]);
+
       setInputValue("");
     }
   };
+  console.log();
 
   return (
     <>
@@ -43,13 +50,19 @@ function App() {
 
         </div>
 
-        {todos.length > 0 && (
+        {todos.length > 0 ? (
           <ul className={styles.todoList}>
+
             {todos.map((todo) => (
-              <li key={todo}>{todo}</li>
+              <li key={todo.task}>{todo.task}</li>
             ))}
+
+            <li className={styles.lastLi}>
+              <span>5 items left</span>
+              <span>Clear Completed</span>
+            </li>
           </ul>
-        )}
+        ) : null}
 
       </div>
 
