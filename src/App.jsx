@@ -8,6 +8,14 @@ import crossIcon from "./images/icon-cross.svg";
 
 function App() {
 
+  const handleClear = () =>{
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => {
+        return !todo.done
+      })
+    })
+  }
+
   const [items, setItems] = useState(0);
 
   const handleTodoLeft = () => {
@@ -142,7 +150,7 @@ function App() {
 
             <li className={styles.lastLi}>
               <span>{items} items left</span>
-              <span>Clear Completed</span>
+              <span onClick={handleClear}>Clear Completed</span>
             </li>
 
           </ul>
