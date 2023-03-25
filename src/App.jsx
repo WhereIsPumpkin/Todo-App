@@ -1,10 +1,23 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import styles from "./App.module.scss";
 import moonIcon from "./images/icon-moon.svg";
 import checkIcon from "./images/icon-check.svg";
 import crossIcon from "./images/icon-cross.svg";
 
 function App() {
+
+  const [items, setItems] = useState(0);
+
+  const handleTodoLeft = () => {
+    let count = 0;
+    todos.forEach((todo) => {
+      if (!todo.done) {
+        count++;
+      }
+    });
+    setItems(count);
+  };
 
   const handleTodoDelete = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
@@ -29,21 +42,17 @@ function App() {
   };
 
   const handleKeyDown = (event) => {
-
     if (event.key === "Enter") {
-
       setTodos((prevTodos) => [
         ...prevTodos,
         {
           task: inputValue,
           done: done,
-          id: todos.length,
+          id: uuidv4(),
         },
       ]);
-
       setInputValue("");
     }
-
   };
 
   return (
@@ -54,9 +63,7 @@ function App() {
       </header>
 
       <div className={styles.main}>
-
         <div className={styles.todoAdd}>
-
           <div
             className={styles.circleCheck}
             onClick={() => setDone(!done)}
@@ -80,19 +87,14 @@ function App() {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-
         </div>
 
         {todos.length > 0 ? (
 
           <ul className={styles.todoList}>
-
             {todos.map((todo) => (
-
               <li key={todo.task}>
-
                 <div className={styles.liWrap}>
-                  
                   <div
                     className={styles.circleCheck}
                     onClick={() => handleTodoClick(todo.id)}
@@ -105,7 +107,6 @@ function App() {
                           }
                         : null
                     }
-                    
                   >
                     <img src={checkIcon} />
                   </div>
@@ -122,26 +123,22 @@ function App() {
                   >
                     {todo.task}
                   </span>
-
                 </div>
 
                 <img
-                 src={crossIcon}
-                 className={styles.crossIcon} 
-                 onClick={() => handleTodoDelete(todo.id)}
-                 />
-
+                  src={crossIcon}
+                  className={styles.crossIcon}
+                  onClick={() => handleTodoDelete(todo.id)}
+                />
               </li>
-
             ))}
 
-          <li className={styles.lastLi}>
-              <span>5 items left</span>
+            <li className={styles.lastLi}>
+              <span>{items} items left</span>
               <span>Clear Completed</span>
-          </li>
+            </li>
 
           </ul>
-
         ) : null}
 
       </div>
