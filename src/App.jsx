@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import styles from "./App.module.scss";
 import moonIcon from "./images/icon-moon.svg";
@@ -11,7 +12,7 @@ function App() {
 
   const handleTodoLeft = () => {
     let count = 0;
-    todos.forEach((todo) => {
+    todos.map((todo) => {
       if (!todo.done) {
         count++;
       }
@@ -22,6 +23,7 @@ function App() {
   const handleTodoDelete = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
+
 
   const handleTodoClick = (id) => {
     setTodos((prevTodos) =>
@@ -34,6 +36,11 @@ function App() {
   const [inputValue, setInputValue] = useState("");
 
   const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    handleTodoLeft();
+  }, [todos]);
+  
 
   const [done, setDone] = useState(false);
 
@@ -93,7 +100,7 @@ function App() {
 
           <ul className={styles.todoList}>
             {todos.map((todo) => (
-              <li key={todo.task}>
+              <li key={uuidv4()}>
                 <div className={styles.liWrap}>
                   <div
                     className={styles.circleCheck}
