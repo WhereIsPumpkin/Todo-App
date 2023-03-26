@@ -160,14 +160,43 @@ function App() {
                 <span>
                   {todos.filter((todo) => !todo.done).length} items left
                 </span>
+
+                <section
+                  className={`${styles.todoFilterDesktop} ${
+                    dark ? styles.dark : null
+                  }`}
+                >
+                  <h4
+                    className={filter === "all" ? styles.active : null}
+                    onClick={() => setFilter("all")}
+                  >
+                    All
+                  </h4>
+
+                  <h4
+                    className={filter === "active" ? styles.active : null}
+                    onClick={() => setFilter("active")}
+                  >
+                    Active
+                  </h4>
+
+                  <h4
+                    className={filter === "completed" ? styles.active : null}
+                    onClick={() => setFilter("completed")}
+                  >
+                    Completed
+                  </h4>
+                </section>
+
                 <span onClick={handleClear} style={{ cursor: "pointer" }}>
                   Clear Completed
                 </span>
               </li>
             </ul>
 
-            <section className={`${styles.todoFilter} ${dark ? styles.dark : null}`}>
-
+            <section
+              className={`${styles.todoFilter} ${dark ? styles.dark : null}`}
+            >
               <h4
                 className={filter === "all" ? styles.active : null}
                 onClick={() => setFilter("all")}
@@ -188,7 +217,7 @@ function App() {
               >
                 Completed
               </h4>
-
+              
             </section>
           </>
         ) : null}
