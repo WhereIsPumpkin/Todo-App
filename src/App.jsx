@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./App.module.scss";
 import moonIcon from "./images/icon-moon.svg";
+import sunIcon from "./images/icon-sun.svg";
 import checkIcon from "./images/icon-check.svg";
 import crossIcon from "./images/icon-cross.svg";
 
 function App() {
+  const [dark, setDark] = useState(false);
 
-  const handleClear = () =>{
+  const handleClear = () => {
     setTodos((prevTodos) => {
       return prevTodos.filter((todo) => {
-        return !todo.done
-      })
-    })
-  }
+        return !todo.done;
+      });
+    });
+  };
 
   const [items, setItems] = useState(0);
 
@@ -32,7 +34,6 @@ function App() {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
-
   const handleTodoClick = (id) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
@@ -48,7 +49,6 @@ function App() {
   useEffect(() => {
     handleTodoLeft();
   }, [todos]);
-  
 
   const [done, setDone] = useState(false);
 
@@ -71,14 +71,21 @@ function App() {
   };
 
   return (
-    <>
-      <header>
+    <main className={dark ? styles.dark : null}>
+      
+      <header className={dark ? styles.dark : null}>
+        <div className={styles.wrapperhead}>
         <h1>T O D O</h1>
-        <img src={moonIcon} alt="moonIcon" />
+        <img
+          src={dark ? sunIcon : moonIcon}
+          alt={dark ? "Sun icon" : "Moon icon"}
+          onClick={() => setDark(!dark)}
+        />
+        </div>
       </header>
 
       <div className={styles.main}>
-        <div className={styles.todoAdd}>
+        <div className={`${styles.todoAdd} ${dark ? styles.dark : null}`}>
           <div
             className={styles.circleCheck}
             onClick={() => setDone(!done)}
@@ -92,10 +99,11 @@ function App() {
                 : null
             }
           >
-            <img src={checkIcon} />
+            {done ? <img src={checkIcon} /> : null}
           </div>
 
           <input
+            className={dark ? styles.dark : null}
             type="text"
             placeholder="Create a new todo..."
             value={inputValue}
@@ -105,10 +113,9 @@ function App() {
         </div>
 
         {todos.length > 0 ? (
-
-          <ul className={styles.todoList}>
+          <ul className={`${styles.todoList} ${dark ? styles.dark : null}`}>
             {todos.map((todo) => (
-              <li key={uuidv4()}>
+              <li key={uuidv4()} className={dark ? styles.dark : null}>
                 <div className={styles.liWrap}>
                   <div
                     className={styles.circleCheck}
@@ -123,16 +130,15 @@ function App() {
                         : null
                     }
                   >
-                    <img src={checkIcon} />
+                    {todo.done ? <img src={checkIcon} /> : null}
                   </div>
 
                   <span
                     style={
                       todo.done
-                        ? {
-                            textDecoration: "line-through",
-                            color: "#D1D2DA",
-                          }
+                        ? dark
+                          ? { color: "#4D5067", textDecoration: "line-through" }
+                          : { textDecoration: "line-through", color: "#D1D2DA" }
                         : null
                     }
                   >
@@ -148,16 +154,17 @@ function App() {
               </li>
             ))}
 
-            <li className={styles.lastLi}>
+            <li className={`${styles.lastLi} ${dark ? styles.dark : null}`}>
               <span>{items} items left</span>
-              <span onClick={handleClear}>Clear Completed</span>
+              <span onClick={handleClear} style={{ cursor: "pointer" }}>
+                Clear Completed
+              </span>
             </li>
-
           </ul>
         ) : null}
-
       </div>
-    </>
+
+    </main>
   );
 }
 
