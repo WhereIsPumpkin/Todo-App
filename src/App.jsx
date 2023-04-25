@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import styles from "./App.module.scss";
-import moonIcon from "./images/icon-moon.svg";
-import sunIcon from "./images/icon-sun.svg";
-import checkIcon from "./images/icon-check.svg";
-import crossIcon from "./images/icon-cross.svg";
+import { React, useState, useEffect } from 'react';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import styles from './App.module.scss';
+import moonIcon from './images/icon-moon.svg';
+import sunIcon from './images/icon-sun.svg';
+import checkIcon from './images/icon-check.svg';
+import crossIcon from './images/icon-cross.svg';
 
 function App() {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState('all');
 
   const [dark, setDark] = useState(false);
 
@@ -22,6 +22,7 @@ function App() {
 
   const handleTodoDelete = (id) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    axios.delete(`https://drab-jade-adder-wrap.cyclic.app/api/projects/${id}`);
   };
 
   const handleTodoClick = (id) => {
@@ -30,11 +31,20 @@ function App() {
         todo.id === id ? { ...todo, done: !todo.done } : todo
       )
     );
+    axios.patch(`https://drab-jade-adder-wrap.cyclic.app/api/projects/${id}`);
   };
 
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://drab-jade-adder-wrap.cyclic.app/api/projects')
+      .then((res) => {
+        setTodos(res.data);
+      });
+  }, []);
 
   const [done, setDone] = useState(false);
 
@@ -43,16 +53,20 @@ function App() {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       setTodos((prevTodos) => [
         ...prevTodos,
         {
-          task: inputValue,
+          todoTask: inputValue,
           done: done,
           id: uuidv4(),
         },
       ]);
-      setInputValue("");
+      setInputValue('');
+      axios.post('https://drab-jade-adder-wrap.cyclic.app/api/projects', {
+        todoTask: inputValue,
+        done: done,
+      });
     }
   };
 
@@ -63,7 +77,7 @@ function App() {
           <h1>T O D O</h1>
           <img
             src={dark ? sunIcon : moonIcon}
-            alt={dark ? "Sun icon" : "Moon icon"}
+            alt={dark ? 'Sun icon' : 'Moon icon'}
             onClick={() => setDark(!dark)}
           />
         </div>
@@ -78,8 +92,8 @@ function App() {
               done
                 ? {
                     background:
-                      "linear-gradient(135deg, #55DDFF 0%, #C058F3 100%)",
-                    border: "none",
+                      'linear-gradient(135deg, #55DDFF 0%, #C058F3 100%)',
+                    border: 'none',
                   }
                 : null
             }
@@ -102,9 +116,9 @@ function App() {
             <ul className={`${styles.todoList} ${dark ? styles.dark : null}`}>
               {todos
                 .filter((todo) => {
-                  if (filter === "active") {
+                  if (filter === 'active') {
                     return !todo.done;
-                  } else if (filter === "completed") {
+                  } else if (filter === 'completed') {
                     return todo.done;
                   } else {
                     return true;
@@ -120,8 +134,8 @@ function App() {
                           todo.done
                             ? {
                                 background:
-                                  "linear-gradient(135deg, #55DDFF 0%, #C058F3 100%)",
-                                border: "none",
+                                  'linear-gradient(135deg, #55DDFF 0%, #C058F3 100%)',
+                                border: 'none',
                               }
                             : null
                         }
@@ -134,17 +148,17 @@ function App() {
                           todo.done
                             ? dark
                               ? {
-                                  color: "#4D5067",
-                                  textDecoration: "line-through",
+                                  color: '#4D5067',
+                                  textDecoration: 'line-through',
                                 }
                               : {
-                                  textDecoration: "line-through",
-                                  color: "#D1D2DA",
+                                  textDecoration: 'line-through',
+                                  color: '#D1D2DA',
                                 }
                             : null
                         }
                       >
-                        {todo.task}
+                        {todo.todoTask}
                       </span>
                     </div>
 
@@ -167,28 +181,28 @@ function App() {
                   }`}
                 >
                   <h4
-                    className={filter === "all" ? styles.active : null}
-                    onClick={() => setFilter("all")}
+                    className={filter === 'all' ? styles.active : null}
+                    onClick={() => setFilter('all')}
                   >
                     All
                   </h4>
 
                   <h4
-                    className={filter === "active" ? styles.active : null}
-                    onClick={() => setFilter("active")}
+                    className={filter === 'active' ? styles.active : null}
+                    onClick={() => setFilter('active')}
                   >
                     Active
                   </h4>
 
                   <h4
-                    className={filter === "completed" ? styles.active : null}
-                    onClick={() => setFilter("completed")}
+                    className={filter === 'completed' ? styles.active : null}
+                    onClick={() => setFilter('completed')}
                   >
                     Completed
                   </h4>
                 </section>
 
-                <span onClick={handleClear} style={{ cursor: "pointer" }}>
+                <span onClick={handleClear} style={{ cursor: 'pointer' }}>
                   Clear Completed
                 </span>
               </li>
@@ -198,26 +212,25 @@ function App() {
               className={`${styles.todoFilter} ${dark ? styles.dark : null}`}
             >
               <h4
-                className={filter === "all" ? styles.active : null}
-                onClick={() => setFilter("all")}
+                className={filter === 'all' ? styles.active : null}
+                onClick={() => setFilter('all')}
               >
                 All
               </h4>
 
               <h4
-                className={filter === "active" ? styles.active : null}
-                onClick={() => setFilter("active")}
+                className={filter === 'active' ? styles.active : null}
+                onClick={() => setFilter('active')}
               >
                 Active
               </h4>
 
               <h4
-                className={filter === "completed" ? styles.active : null}
-                onClick={() => setFilter("completed")}
+                className={filter === 'completed' ? styles.active : null}
+                onClick={() => setFilter('completed')}
               >
                 Completed
               </h4>
-              
             </section>
           </>
         ) : null}
